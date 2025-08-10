@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/routing/app_router.dart';
+import 'theme/app_theme.dart';
 
 class NwasloukApp extends StatelessWidget {
   const NwasloukApp({super.key});
@@ -9,10 +10,7 @@ class NwasloukApp extends StatelessWidget {
     return MaterialApp(
       title: 'Nwaslouk',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0E7490)),
-        useMaterial3: true,
-      ),
+      theme: nwasloukTheme,
       initialRoute: AppRouter.initialRoute,
       routes: AppRouter.routes,
     );

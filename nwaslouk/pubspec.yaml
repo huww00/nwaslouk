@@ -34,6 +34,9 @@ dependencies:
 
   # Routing (optional basic Navigator used; can switch to go_router later)
 
+  # Fonts
+  google_fonts: ^6.2.1
+
   # Lints
   flutter_lints: ^4.0.0
 
