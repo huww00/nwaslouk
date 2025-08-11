@@ -10,10 +10,22 @@ class NwasloukApp extends StatelessWidget {
       title: 'Nwaslouk',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE53E3E)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFE53E3E),
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF7FAFC),
-        fontFamily: 'Roboto',
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFF7FAFC),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Color(0xFFE53E3E)),
+          titleTextStyle: TextStyle(
+            color: Color(0xFF2D3748),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       initialRoute: AppRouter.initialRoute,
       routes: AppRouter.routes,

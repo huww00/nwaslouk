@@ -4,7 +4,7 @@ import '../providers/sign_in_provider.dart';
 import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
 import 'sign_up_page.dart';
-import '../../../features/search_trips/pages/search_trips_page.dart';
+import '../../search_trips/pages/search_trips_page.dart';
 
 class SignInPage extends ConsumerWidget {
   static const String routeName = '/';
