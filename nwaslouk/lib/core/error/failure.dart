@@ -17,4 +17,5 @@ class Failure {
   static Failure notFound([String message = 'Not found']) => Failure(message: message, code: 'not_found', statusCode: 404);
   static Failure server([String message = 'Server error']) => Failure(message: message, code: 'server');
   static Failure validation([String message = 'Validation error']) => Failure(message: message, code: 'validation');
+  static Failure conflict([String message = 'Conflict']) => Failure(message: message, code: 'conflict', statusCode: 409);
 }
