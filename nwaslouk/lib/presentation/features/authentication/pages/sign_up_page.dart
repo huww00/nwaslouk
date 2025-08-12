@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/sign_up_provider.dart';
 import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
-import 'sign_in_page.dart';
+import '../widgets/celebration_dialog.dart';
+import 'success_page.dart';
 
 class SignUpPage extends ConsumerWidget {
   static const String routeName = '/sign-up';
@@ -386,9 +387,19 @@ class SignUpPage extends ConsumerWidget {
                           : () async {
                               final success = await notifier.signUp();
                               if (context.mounted && success) {
-                                Navigator.of(context).pushReplacementNamed(
-                                  SignInPage.routeName,
+                                await showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => const CelebrationDialog(
+                                    title: 'Account created!',
+                                    message: 'Your account has been created successfully.',
+                                  ),
                                 );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AuthSuccessPage.routeName,
+                                  );
+                                }
                               }
                             },
                     ),

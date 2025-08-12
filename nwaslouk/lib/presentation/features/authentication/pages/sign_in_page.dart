@@ -5,6 +5,8 @@ import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
 import 'sign_up_page.dart';
 import '../../search_trips/pages/search_trips_page.dart';
+import '../widgets/celebration_dialog.dart';
+import 'success_page.dart';
 
 class SignInPage extends ConsumerWidget {
   static const String routeName = '/';
@@ -170,9 +172,19 @@ class SignInPage extends ConsumerWidget {
                           : () async {
                               final success = await notifier.signIn();
                               if (context.mounted && success) {
-                                Navigator.of(context).pushReplacementNamed(
-                                  SearchTripsPage.routeName,
+                                await showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => const CelebrationDialog(
+                                    title: 'Welcome back!',
+                                    message: 'You have signed in successfully.',
+                                  ),
                                 );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AuthSuccessPage.routeName,
+                                  );
+                                }
                               }
                             },
                     ),

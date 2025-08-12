@@ -7,4 +7,15 @@ abstract class AuthRepository {
     required String identifier,
     required String password,
   });
+
+  Future<Either<Failure, AuthToken>> signUp({
+    required String email,
+    required String password,
+    String? name,
+    String? phone,
+    String? location,
+    bool isDriver = false,
+  });
+
+  Future<Either<Failure, void>> logout();
 }

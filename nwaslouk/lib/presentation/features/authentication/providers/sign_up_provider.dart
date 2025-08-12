@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../domain/usecases/auth/sign_up_usecase.dart';
 
 class SignUpState {
   final String name;
@@ -48,6 +50,7 @@ class SignUpState {
 }
 
 class SignUpNotifier extends StateNotifier<SignUpState> {
+  final SignUpUseCase _signUpUseCase = sl<SignUpUseCase>();
   SignUpNotifier() : super(const SignUpState());
 
   void updateName(String value) => state = state.copyWith(name: value, error: null);
@@ -96,20 +99,22 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
 
     state = state.copyWith(isLoading: true, error: null);
 
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      
-      // Mock success - in real implementation, this would call the API
+    final result = await _signUpUseCase(SignUpParams(
+      email: state.email,
+      password: state.password,
+      name: state.name,
+      phone: state.phone,
+      location: state.location,
+      isDriver: state.isDriver,
+    ));
+
+    return result.fold((l) {
+      state = state.copyWith(isLoading: false, error: l.message);
+      return false;
+    }, (r) {
       state = state.copyWith(isLoading: false);
       return true;
-    } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to create account. Please try again.',
-      );
-      return false;
-    }
+    });
   }
 }
 
