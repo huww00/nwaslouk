@@ -152,6 +152,61 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+
+                    const SizedBox(height: 24),
+
+                    // Email
+                    SoftUITextField(
+                      label: 'Email',
+                      hint: 'example@mail.com',
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: notifier.updateEmail,
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Password
+                    SoftUITextField(
+                      label: 'Password',
+                      hint: 'Enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updatePassword,
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Confirm Password
+                    SoftUITextField(
+                      label: 'Confirm Password',
+                      hint: 'Re-enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updateConfirmPassword,
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Location
+                    SoftUITextField(
+                      label: 'Location',
+                      hint: 'Your city or address',
+                      onChanged: notifier.updateLocation,
+                      prefixIcon: const Icon(
+                        Icons.location_on,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
                     
                     const SizedBox(height: 24),
                     

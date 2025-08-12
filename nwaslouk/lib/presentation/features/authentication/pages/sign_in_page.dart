@@ -107,26 +107,27 @@ class SignInPage extends ConsumerWidget {
                     
                     const SizedBox(height: 32),
                     
+                    // Identifier: Email or Phone
                     SoftUITextField(
-                      label: 'Phone Number',
-                      hint: '+216 XX XXX XXX',
-                      keyboardType: TextInputType.phone,
-                      onChanged: notifier.updatePhone,
+                      label: 'Email or Phone Number',
+                      hint: 'example@mail.com or +216 XX XXX XXX',
+                      onChanged: notifier.updateIdentifier,
                       prefixIcon: const Icon(
-                        Icons.phone,
+                        Icons.person,
                         color: Color(0xFFE53E3E),
                       ),
                     ),
                     
                     const SizedBox(height: 24),
                     
+                    // Password
                     SoftUITextField(
-                      label: 'OTP Code',
-                      hint: 'Enter verification code',
-                      keyboardType: TextInputType.number,
-                      onChanged: notifier.updateOtp,
+                      label: 'Password',
+                      hint: 'Enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updatePassword,
                       prefixIcon: const Icon(
-                        Icons.security,
+                        Icons.lock,
                         color: Color(0xFFE53E3E),
                       ),
                     ),

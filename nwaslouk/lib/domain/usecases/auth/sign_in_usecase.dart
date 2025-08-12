@@ -4,9 +4,9 @@ import '../../entities/auth_token.dart';
 import '../../repositories/auth_repository.dart';
 
 class SignInParams {
-  final String phone;
-  final String otp;
-  const SignInParams({required this.phone, required this.otp});
+  final String identifier; // email or phone
+  final String password;
+  const SignInParams({required this.identifier, required this.password});
 }
 
 class SignInUseCase {
@@ -14,6 +14,6 @@ class SignInUseCase {
   const SignInUseCase(this.repository);
 
   Future<Either<Failure, AuthToken>> call(SignInParams params) {
-    return repository.signIn(phone: params.phone, otp: params.otp);
+    return repository.signIn(identifier: params.identifier, password: params.password);
   }
 }
