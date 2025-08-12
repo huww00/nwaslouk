@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../env/environment.dart';
 import '../logging/app_logger.dart';
+import '../../data/datasources/local/local_store.dart';
 
 class ApiClient {
   static Dio createDio({required String baseUrl}) {
@@ -18,7 +19,14 @@ class ApiClient {
     );
 
     dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        // Attach auth token if available
+        try {
+          final token = await LocalStore().getAuthToken();
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+        } catch (_) {}
         if (Environment.current.enableNetworkLogs) {
           AppLogger.d('[REQ] ${options.method} ${options.uri}');
           AppLogger.d(options.data);

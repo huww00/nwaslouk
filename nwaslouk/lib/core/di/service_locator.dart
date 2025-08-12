@@ -30,6 +30,7 @@ import '../../domain/usecases/auth/sign_in_usecase.dart';
 import '../../domain/usecases/auth/sign_up_usecase.dart';
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/profile/get_profile_usecase.dart';
+import '../../domain/usecases/profile/update_profile_usecase.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -66,4 +67,5 @@ Future<void> configureDependencies() async {
   sl.registerFactory<SignUpUseCase>(() => SignUpUseCase(sl<AuthRepository>()));
   sl.registerFactory<LogoutUseCase>(() => LogoutUseCase(sl<AuthRepository>()));
   sl.registerFactory<GetProfileUseCase>(() => GetProfileUseCase(sl<ProfileRepository>()));
+  sl.registerFactory<UpdateProfileUseCase>(() => UpdateProfileUseCase(sl<ProfileRepository>()));
 }

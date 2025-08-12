@@ -28,4 +28,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return Right(mockData.profile);
     }
   }
+
+  @override
+  Future<Either<Failure, UserProfile>> updateProfile({String? name, String? phone}) async {
+    try {
+      final Map<String, dynamic> body = {};
+      if (name != null) body['name'] = name;
+      if (phone != null) body['phone'] = phone;
+      final res = await api.updateProfile(body);
+      final profile = UserProfile.fromJson(res.data as Map<String, dynamic>);
+      return Right(profile);
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status == 401) return Left(Failure.unauthorized());
+      if (status == 409) return Left(Failure.validation('Phone already in use'));
+      return Left(Failure.server(e.message ?? 'Server error'));
+    } catch (e) {
+      return Left(Failure.server('Unexpected error'));
+    }
+  }
 }

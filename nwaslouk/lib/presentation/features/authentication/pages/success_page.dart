@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../domain/usecases/auth/logout_usecase.dart';
 import 'sign_in_page.dart';
+import '../../profile/pages/profile_page.dart';
 
 class AuthSuccessPage extends ConsumerWidget {
   static const String routeName = '/auth-success';
@@ -11,7 +12,17 @@ class AuthSuccessPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Success')),
+      appBar: AppBar(
+        title: const Text('Success'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle, color: Color(0xFFE53E3E)),
+            onPressed: () {
+              Navigator.of(context).pushNamed(ProfilePage.routeName);
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

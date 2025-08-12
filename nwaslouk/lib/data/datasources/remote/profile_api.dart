@@ -7,4 +7,8 @@ class ProfileApi {
   Future<Response<dynamic>> getProfile() {
     return _dio.get('/profile');
   }
+
+  Future<Response<dynamic>> updateProfile(Map<String, dynamic> body) {
+    return _dio.patch('/profile', data: body);
+  }
 }
