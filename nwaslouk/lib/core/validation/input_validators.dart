@@ -1,4 +1,7 @@
 class InputValidators {
+  static final RegExp _specialCharRegex =
+  RegExp(r'[!@#$%^&*(),.?":{}|<>_\-+=\\/[\];`~]');
+
   static String? requireNonEmpty(String? value, {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required';
@@ -21,15 +24,14 @@ class InputValidators {
   }
 
   static String? passwordStrong(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
-    if (value.length < 8) return 'At least 8 characters';
-    if (!RegExp(r'[A-Z]').hasMatch(value)) return 'Include an uppercase letter';
-    if (!RegExp(r'[a-z]').hasMatch(value)) return 'Include a lowercase letter';
-    if (!RegExp(r'\d').hasMatch(value)) return 'Include a number';
-    if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>\-_=+\\/\[\];\']').hasMatch(value)) return 'Include a special character';
-    return null;
+  if (value == null || value.isEmpty) return 'Password is required';
+  if (value.length < 8) return 'At least 8 characters';
+  if (!RegExp(r'[A-Z]').hasMatch(value)) return 'Include an uppercase letter';
+  if (!RegExp(r'[a-z]').hasMatch(value)) return 'Include a lowercase letter';
+  if (!RegExp(r'\d').hasMatch(value)) return 'Include a number';
+  if (!_specialCharRegex.hasMatch(value)) return 'Include a special character';
+  return null;
   }
-
   static String? confirmPassword(String? value, String original) {
     if (value == null || value.isEmpty) return 'Confirm your password';
     if (value != original) return 'Passwords do not match';

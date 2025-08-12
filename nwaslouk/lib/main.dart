@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Determine environment via --dart-define=ENV=dev|staging|prod
-  final String env = const String.fromEnvironment('ENV', defaultValue: 'dev');
+  const String env = String.fromEnvironment('ENV', defaultValue: 'dev');
   await Environment.load(env);
 
   await configureDependencies();
