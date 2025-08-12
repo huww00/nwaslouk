@@ -60,7 +60,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(AuthToken(token));
     } on DioException catch (e) {
       final status = e.response?.statusCode;
-      if (status == 409) return Left(Failure.conflict('Email or phone already in use'));
+      if (status == 409) return Left(Failure.validation('Email or phone already in use'));
       return Left(Failure.server(e.message ?? 'Server error'));
     } catch (_) {
       // Mock token fallback
