@@ -4,7 +4,7 @@ import '../entities/auth_token.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, AuthToken>> signIn({
-    required String phone,
-    required String otp,
+    required String identifier,
+    required String password,
   });
 }

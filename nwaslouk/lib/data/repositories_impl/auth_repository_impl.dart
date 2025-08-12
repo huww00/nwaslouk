@@ -13,9 +13,14 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.api, required this.localStore});
 
   @override
-  Future<Either<Failure, AuthToken>> signIn({required String phone, required String otp}) async {
+  Future<Either<Failure, AuthToken>> signIn({required String identifier, required String password}) async {
     try {
-      final res = await api.signIn({'phone': phone, 'otp': otp});
+      final bool isEmail = identifier.contains('@');
+      final Map<String, dynamic> body = {
+        if (isEmail) 'email': identifier else 'phone': identifier,
+        'password': password,
+      };
+      final res = await api.signIn(body);
       final token = (res.data as Map<String, dynamic>)['token'] as String;
       await localStore.saveAuthToken(token);
       return Right(AuthToken(token));

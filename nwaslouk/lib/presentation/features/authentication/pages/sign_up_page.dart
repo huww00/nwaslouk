@@ -152,6 +152,57 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Email',
+                      hint: 'you@example.com',
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: notifier.updateEmail,
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Password',
+                      hint: 'Create a password',
+                      obscureText: true,
+                      onChanged: notifier.updatePassword,
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Confirm Password',
+                      hint: 'Re-enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updateConfirmPassword,
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Location',
+                      hint: 'Your city or area',
+                      onChanged: notifier.updateLocation,
+                      prefixIcon: const Icon(
+                        Icons.location_on,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
                     
                     const SizedBox(height: 24),
                     
