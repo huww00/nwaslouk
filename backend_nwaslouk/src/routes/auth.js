@@ -12,6 +12,31 @@ function signToken(user) {
   return jwt.sign({ sub: user._id, email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
+// Availability checks
+router.get('/check-email', async (req, res) => {
+  try {
+    const email = String(req.query.email || '').toLowerCase();
+    if (!email) return res.status(400).json({ message: 'email query param is required' });
+    const user = await User.findOne({ email });
+    return res.json({ exists: Boolean(user) });
+  } catch (err) {
+    console.error('check-email error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/check-phone', async (req, res) => {
+  try {
+    const phone = String(req.query.phone || '');
+    if (!phone) return res.status(400).json({ message: 'phone query param is required' });
+    const user = await User.findOne({ phone });
+    return res.json({ exists: Boolean(user) });
+  } catch (err) {
+    console.error('check-phone error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // POST /auth/sign-up
 router.post('/sign-up', async (req, res) => {
   try {

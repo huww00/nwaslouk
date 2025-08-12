@@ -140,6 +140,13 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.nameError != null)
+                      const SizedBox(height: 8),
+                    if (state.nameError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.nameError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
                     
                     const SizedBox(height: 24),
                     
@@ -153,6 +160,23 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.phoneError != null)
+                      const SizedBox(height: 8),
+                    if (state.phoneError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.phoneError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
+                    if (state.phoneError == null && state.phone.isNotEmpty && state.phoneExists != null)
+                      const SizedBox(height: 8),
+                    if (state.phoneError == null && state.phone.isNotEmpty && state.phoneExists != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          state.phoneExists == true ? 'Phone already in use' : 'Phone available',
+                          style: TextStyle(color: state.phoneExists == true ? const Color(0xFFE53E3E) : const Color(0xFF38A169), fontSize: 12),
+                        ),
+                      ),
 
                     const SizedBox(height: 24),
 
@@ -166,6 +190,23 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.emailError != null)
+                      const SizedBox(height: 8),
+                    if (state.emailError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.emailError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
+                    if (state.emailError == null && state.email.isNotEmpty && state.emailExists != null)
+                      const SizedBox(height: 8),
+                    if (state.emailError == null && state.email.isNotEmpty && state.emailExists != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          state.emailExists == true ? 'Email already in use' : 'Email available',
+                          style: TextStyle(color: state.emailExists == true ? const Color(0xFFE53E3E) : const Color(0xFF38A169), fontSize: 12),
+                        ),
+                      ),
 
                     const SizedBox(height: 24),
 
@@ -179,6 +220,13 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.passwordError != null)
+                      const SizedBox(height: 8),
+                    if (state.passwordError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.passwordError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
 
                     const SizedBox(height: 24),
 
@@ -192,6 +240,13 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.confirmPasswordError != null)
+                      const SizedBox(height: 8),
+                    if (state.confirmPasswordError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.confirmPasswordError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
 
                     const SizedBox(height: 24),
 
@@ -204,6 +259,13 @@ class SignUpPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.locationError != null)
+                      const SizedBox(height: 8),
+                    if (state.locationError != null)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(state.locationError!, style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12)),
+                      ),
                     
                     const SizedBox(height: 24),
                     
@@ -403,33 +465,15 @@ class SignUpPage extends ConsumerWidget {
                               }
                             },
                     ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Already have an account? ',
-                          style: TextStyle(
-                            color: Color(0xFF718096),
-                            fontSize: 14,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => Navigator.of(context).pushReplacementNamed(
-                            SignInPage.routeName,
-                          ),
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Color(0xFFE53E3E),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
+
+                    const SizedBox(height: 16),
+
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pushReplacementNamed(SignInPage.routeName),
+                      child: const Text(
+                        'Already have an account? Sign in',
+                        style: TextStyle(color: Color(0xFF718096), fontSize: 14, decoration: TextDecoration.underline),
+                      ),
                     ),
                   ],
                 ),

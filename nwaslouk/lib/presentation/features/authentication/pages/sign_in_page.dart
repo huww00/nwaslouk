@@ -119,6 +119,17 @@ class SignInPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.identifierError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            state.identifierError!,
+                            style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12),
+                          ),
+                        ),
+                      ),
                     
                     const SizedBox(height: 24),
                     
@@ -132,6 +143,17 @@ class SignInPage extends ConsumerWidget {
                         color: Color(0xFFE53E3E),
                       ),
                     ),
+                    if (state.passwordError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            state.passwordError!,
+                            style: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12),
+                          ),
+                        ),
+                      ),
                     
                     const SizedBox(height: 32),
                     

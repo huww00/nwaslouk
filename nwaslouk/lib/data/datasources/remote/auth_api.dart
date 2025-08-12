@@ -15,4 +15,12 @@ class AuthApi {
   Future<Response<dynamic>> logout() {
     return _dio.post('/auth/logout');
   }
+
+  Future<Response<dynamic>> checkEmail(String email) {
+    return _dio.get('/auth/check-email', queryParameters: { 'email': email });
+  }
+
+  Future<Response<dynamic>> checkPhone(String phone) {
+    return _dio.get('/auth/check-phone', queryParameters: { 'phone': phone });
+  }
 }
