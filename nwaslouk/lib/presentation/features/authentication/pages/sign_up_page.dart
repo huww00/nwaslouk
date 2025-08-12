@@ -6,7 +6,6 @@ import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
 import '../widgets/celebration_dialog.dart';
 import 'success_page.dart';
-
 class SignUpPage extends ConsumerWidget {
   static const String routeName = '/sign-up';
   const SignUpPage({super.key});
