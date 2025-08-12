@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/sign_up_provider.dart';
 import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
-import 'sign_in_page.dart';
+import '../widgets/celebration_dialog.dart';
+import 'success_page.dart';
 
 class SignUpPage extends ConsumerWidget {
   static const String routeName = '/sign-up';
@@ -149,6 +150,57 @@ class SignUpPage extends ConsumerWidget {
                       onChanged: notifier.updatePhone,
                       prefixIcon: const Icon(
                         Icons.phone,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Email',
+                      hint: 'you@example.com',
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: notifier.updateEmail,
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Password',
+                      hint: 'Create a password',
+                      obscureText: true,
+                      onChanged: notifier.updatePassword,
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Confirm Password',
+                      hint: 'Re-enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updateConfirmPassword,
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Color(0xFFE53E3E),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SoftUITextField(
+                      label: 'Location',
+                      hint: 'Your city or area',
+                      onChanged: notifier.updateLocation,
+                      prefixIcon: const Icon(
+                        Icons.location_on,
                         color: Color(0xFFE53E3E),
                       ),
                     ),
@@ -335,9 +387,19 @@ class SignUpPage extends ConsumerWidget {
                           : () async {
                               final success = await notifier.signUp();
                               if (context.mounted && success) {
-                                Navigator.of(context).pushReplacementNamed(
-                                  SignInPage.routeName,
+                                await showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => const CelebrationDialog(
+                                    title: 'Account created!',
+                                    message: 'Your account has been created successfully.',
+                                  ),
                                 );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AuthSuccessPage.routeName,
+                                  );
+                                }
                               }
                             },
                     ),

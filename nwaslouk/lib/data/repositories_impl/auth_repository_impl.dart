@@ -13,9 +13,14 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.api, required this.localStore});
 
   @override
-  Future<Either<Failure, AuthToken>> signIn({required String phone, required String otp}) async {
+  Future<Either<Failure, AuthToken>> signIn({required String identifier, required String password}) async {
     try {
-      final res = await api.signIn({'phone': phone, 'otp': otp});
+      final bool isEmail = identifier.contains('@');
+      final Map<String, dynamic> body = {
+        if (isEmail) 'email': identifier else 'phone': identifier,
+        'password': password,
+      };
+      final res = await api.signIn(body);
       final token = (res.data as Map<String, dynamic>)['token'] as String;
       await localStore.saveAuthToken(token);
       return Right(AuthToken(token));
@@ -29,5 +34,50 @@ class AuthRepositoryImpl implements AuthRepository {
       await localStore.saveAuthToken(token);
       return const Right(AuthToken(token));
     }
+  }
+
+  @override
+  Future<Either<Failure, AuthToken>> signUp({
+    required String email,
+    required String password,
+    String? name,
+    String? phone,
+    String? location,
+    bool isDriver = false,
+  }) async {
+    try {
+      final body = {
+        'email': email,
+        'password': password,
+        if (name != null) 'name': name,
+        if (phone != null) 'phone': phone,
+        if (location != null) 'location': location,
+        'isDriver': isDriver,
+      };
+      final res = await api.signUp(body);
+      final token = (res.data as Map<String, dynamic>)['token'] as String;
+      await localStore.saveAuthToken(token);
+      return Right(AuthToken(token));
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status == 409) return Left(Failure.conflict('Email or phone already in use'));
+      return Left(Failure.server(e.message ?? 'Server error'));
+    } catch (_) {
+      // Mock token fallback
+      const token = 'mock-token';
+      await localStore.saveAuthToken(token);
+      return const Right(AuthToken(token));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await api.logout();
+    } catch (_) {
+      // ignore network error for logout in stateless JWT
+    }
+    await localStore.clear();
+    return const Right(null);
   }
 }

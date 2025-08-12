@@ -5,6 +5,8 @@ import '../widgets/soft_ui_button.dart';
 import '../widgets/soft_ui_text_field.dart';
 import 'sign_up_page.dart';
 import '../../search_trips/pages/search_trips_page.dart';
+import '../widgets/celebration_dialog.dart';
+import 'success_page.dart';
 
 class SignInPage extends ConsumerWidget {
   static const String routeName = '/';
@@ -108,12 +110,12 @@ class SignInPage extends ConsumerWidget {
                     const SizedBox(height: 32),
                     
                     SoftUITextField(
-                      label: 'Phone Number',
-                      hint: '+216 XX XXX XXX',
-                      keyboardType: TextInputType.phone,
-                      onChanged: notifier.updatePhone,
+                      label: 'Email or Phone Number',
+                      hint: 'you@example.com or +216 XX XXX XXX',
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: notifier.updateIdentifier,
                       prefixIcon: const Icon(
-                        Icons.phone,
+                        Icons.account_circle,
                         color: Color(0xFFE53E3E),
                       ),
                     ),
@@ -121,12 +123,12 @@ class SignInPage extends ConsumerWidget {
                     const SizedBox(height: 24),
                     
                     SoftUITextField(
-                      label: 'OTP Code',
-                      hint: 'Enter verification code',
-                      keyboardType: TextInputType.number,
-                      onChanged: notifier.updateOtp,
+                      label: 'Password',
+                      hint: 'Enter your password',
+                      obscureText: true,
+                      onChanged: notifier.updatePassword,
                       prefixIcon: const Icon(
-                        Icons.security,
+                        Icons.lock,
                         color: Color(0xFFE53E3E),
                       ),
                     ),
@@ -170,9 +172,19 @@ class SignInPage extends ConsumerWidget {
                           : () async {
                               final success = await notifier.signIn();
                               if (context.mounted && success) {
-                                Navigator.of(context).pushReplacementNamed(
-                                  SearchTripsPage.routeName,
+                                await showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => const CelebrationDialog(
+                                    title: 'Welcome back!',
+                                    message: 'You have signed in successfully.',
+                                  ),
                                 );
+                                if (context.mounted) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AuthSuccessPage.routeName,
+                                  );
+                                }
                               }
                             },
                     ),

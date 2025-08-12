@@ -7,4 +7,12 @@ class AuthApi {
   Future<Response<dynamic>> signIn(Map<String, dynamic> body) {
     return _dio.post('/auth/sign-in', data: body);
   }
+
+  Future<Response<dynamic>> signUp(Map<String, dynamic> body) {
+    return _dio.post('/auth/sign-up', data: body);
+  }
+
+  Future<Response<dynamic>> logout() {
+    return _dio.post('/auth/logout');
+  }
 }
