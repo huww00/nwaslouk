@@ -7,6 +7,7 @@ import 'sign_up_page.dart';
 import '../../search_trips/pages/search_trips_page.dart';
 import '../widgets/celebration_dialog.dart';
 import 'success_page.dart';
+import '../../../widgets/google_sign_in_button.dart';
 
 class SignInPage extends ConsumerWidget {
   static const String routeName = '/';
@@ -209,6 +210,51 @@ class SignInPage extends ConsumerWidget {
                                 }
                               }
                             },
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Divider
+                    const Row(
+                      children: [
+                        Expanded(child: Divider(color: Color(0xFFE2E8F0))),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'OR',
+                            style: TextStyle(
+                              color: Color(0xFF718096),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: Color(0xFFE2E8F0))),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Google Sign-In Button
+                    GoogleSignInButton(
+                      onSuccess: () async {
+                        await showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => const CelebrationDialog(
+                            title: 'Welcome!',
+                            message: 'You have signed in with Google successfully.',
+                          ),
+                        );
+                        if (context.mounted) {
+                          Navigator.of(context).pushReplacementNamed(
+                            AuthSuccessPage.routeName,
+                          );
+                        }
+                      },
+                      onError: () {
+                        // Error is already handled by the button widget
+                      },
                     ),
                     
                     const SizedBox(height: 24),

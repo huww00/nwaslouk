@@ -12,6 +12,10 @@ class AuthApi {
     return _dio.post('/auth/sign-up', data: body);
   }
 
+  Future<Response<dynamic>> signInWithGoogle(Map<String, dynamic> body) {
+    return _dio.post('/auth/google', data: body);
+  }
+
   Future<Response<dynamic>> logout() {
     return _dio.post('/auth/logout');
   }

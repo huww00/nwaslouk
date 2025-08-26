@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../core/error/failure.dart';
 import '../../domain/entities/auth_token.dart';
@@ -10,7 +11,13 @@ import '../datasources/remote/auth_api.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApi api;
   final LocalStore localStore;
-  AuthRepositoryImpl({required this.api, required this.localStore});
+  final GoogleSignIn googleSignIn;
+
+  AuthRepositoryImpl({
+    required this.api,
+    required this.localStore,
+    GoogleSignIn? googleSignIn,
+  }) : googleSignIn = googleSignIn ?? GoogleSignIn(scopes: ['email', 'profile']);
 
   @override
   Future<Either<Failure, AuthToken>> signIn({required String identifier, required String password}) async {
@@ -67,6 +74,38 @@ class AuthRepositoryImpl implements AuthRepository {
       const token = 'mock-token';
       await localStore.saveAuthToken(token);
       return const Right(AuthToken(token));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthToken>> signInWithGoogle() async {
+    try {
+      // Start Google Sign-In flow
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        return Left(Failure.validation('Google sign in was cancelled'));
+      }
+
+      // Get authentication details
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final String? idToken = googleAuth.idToken;
+
+      if (idToken == null) {
+        return Left(Failure.validation('Failed to get Google ID token'));
+      }
+
+      // Send token to backend
+      final body = {'idToken': idToken};
+      final res = await api.signInWithGoogle(body);
+      final token = (res.data as Map<String, dynamic>)['token'] as String;
+      await localStore.saveAuthToken(token);
+      return Right(AuthToken(token));
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      if (status == 401) return Left(Failure.unauthorized());
+      return Left(Failure.server(e.message ?? 'Google sign in failed'));
+    } catch (e) {
+      return Left(Failure.server('Google sign in failed: $e'));
     }
   }
 

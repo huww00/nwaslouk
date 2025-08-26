@@ -1,9 +1,14 @@
 import 'package:dartz/dartz.dart';
-import '../entities/auth_user.dart';
+import '../entities/auth_token.dart';
+import '../../core/error/failure.dart';
 
 abstract class AuthRepository {
-  // Local authentication
-  Future<Either<String, String>> signUp({
+  Future<Either<Failure, AuthToken>> signIn({
+    required String identifier,
+    required String password,
+  });
+
+  Future<Either<Failure, AuthToken>> signUp({
     required String email,
     required String password,
     String? name,
@@ -12,17 +17,7 @@ abstract class AuthRepository {
     bool isDriver = false,
   });
 
-  Future<Either<String, String>> signIn({
-    String? email,
-    String? phone,
-    required String password,
-  });
+  Future<Either<Failure, AuthToken>> signInWithGoogle();
 
-  // Google authentication
-  Future<Either<String, String>> signInWithGoogle();
-
-  // General
-  Future<Either<String, AuthUser>> getCurrentUser(String token);
-  Future<Either<String, void>> logout();
-  Future<Either<String, bool>> isAuthenticated();
+  Future<Either<Failure, void>> logout();
 }
