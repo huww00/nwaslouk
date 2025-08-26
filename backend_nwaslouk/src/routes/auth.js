@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const { verifyGoogleToken } = require('../config/google');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_jwt_secret';
@@ -63,7 +64,8 @@ router.post('/sign-up', async (req, res) => {
       name: name || '',
       phone: phone || undefined,
       location: location || '',
-      isDriver: Boolean(isDriver)
+      isDriver: Boolean(isDriver),
+      authProvider: 'local'
     });
 
     const token = signToken(user);
@@ -86,6 +88,11 @@ router.post('/sign-in', async (req, res) => {
     const user = await User.findOne(query);
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
+    // Check if user is a Google auth user trying to use password
+    if (user.authProvider === 'google') {
+      return res.status(401).json({ message: 'This account was created with Google. Please sign in with Google.' });
+    }
+
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) return res.status(401).json({ message: 'Invalid credentials' });
 
@@ -94,6 +101,55 @@ router.post('/sign-in', async (req, res) => {
   } catch (err) {
     console.error('sign-in error:', err);
     return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST /auth/google
+router.post('/google', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) {
+      return res.status(400).json({ message: 'Google ID token is required' });
+    }
+
+    // Verify Google token
+    const googleData = await verifyGoogleToken(idToken);
+    
+    // Check if user already exists
+    let user = await User.findOne({ 
+      $or: [
+        { email: googleData.email.toLowerCase() },
+        { googleId: googleData.googleId }
+      ]
+    });
+
+    if (user) {
+      // Update existing user with Google info if needed
+      if (!user.googleId) {
+        user.googleId = googleData.googleId;
+        user.authProvider = 'google';
+        if (!user.name && googleData.name) {
+          user.name = googleData.name;
+        }
+        await user.save();
+      }
+    } else {
+      // Create new user
+      user = await User.create({
+        email: googleData.email.toLowerCase(),
+        googleId: googleData.googleId,
+        name: googleData.name || '',
+        authProvider: 'google',
+        location: '',
+        isDriver: false
+      });
+    }
+
+    const token = signToken(user);
+    return res.json({ token });
+  } catch (err) {
+    console.error('Google auth error:', err);
+    return res.status(500).json({ message: 'Google authentication failed' });
   }
 });
 

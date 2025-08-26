@@ -32,6 +32,12 @@ dependencies:
   # Local storage (optional)
   shared_preferences: ^2.3.2
 
+  # Google Sign-In
+  google_sign_in: ^6.2.1
+
+  # HTTP for Google OAuth
+  http: ^1.2.0
+
   # Routing (optional basic Navigator used; can switch to go_router later)
 
   # Lints
