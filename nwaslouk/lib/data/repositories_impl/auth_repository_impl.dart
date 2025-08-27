@@ -28,11 +28,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final status = e.response?.statusCode;
       if (status == 401) return Left(Failure.unauthorized());
       return Left(Failure.server(e.message ?? 'Server error'));
-    } catch (_) {
-      // Mock token for offline dev
-      const token = 'mock-token';
-      await localStore.saveAuthToken(token);
-      return const Right(AuthToken(token));
+    } catch (e) {
+      return Left(Failure.server(e.toString()));
     }
   }
 
@@ -62,11 +59,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final status = e.response?.statusCode;
       if (status == 409) return Left(Failure.validation('Email or phone already in use'));
       return Left(Failure.server(e.message ?? 'Server error'));
-    } catch (_) {
-      // Mock token fallback
-      const token = 'mock-token';
-      await localStore.saveAuthToken(token);
-      return const Right(AuthToken(token));
+    } catch (e) {
+      return Left(Failure.server(e.toString()));
     }
   }
 
