@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/booking_provider.dart';
+import '../../profile/pages/profile_page.dart';
 
 class BookingPage extends ConsumerWidget {
   static const String routeName = '/booking';
@@ -14,7 +15,16 @@ class BookingPage extends ConsumerWidget {
     final tripId = ModalRoute.of(context)?.settings.arguments as String?;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Book Seats')),
+      appBar: AppBar(
+        title: const Text('Book Seats'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Profile',
+            onPressed: () => Navigator.of(context).pushNamed(ProfilePage.routeName),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
