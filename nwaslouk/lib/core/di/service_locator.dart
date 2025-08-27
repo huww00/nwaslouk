@@ -37,11 +37,14 @@ Future<void> configureDependencies() async {
   // Logger
   sl.registerLazySingleton<Logger>(() => AppLogger.instance);
 
-  // Dio client
-  sl.registerLazySingleton<Dio>(() => ApiClient.createDio(baseUrl: Environment.current.apiBaseUrl));
-
   // Local store
   sl.registerLazySingleton<LocalStore>(() => LocalStore());
+
+  // Dio client (inject Authorization header via token provider)
+  sl.registerLazySingleton<Dio>(() => ApiClient.createDio(
+        baseUrl: Environment.current.apiBaseUrl,
+        tokenProvider: () => sl<LocalStore>().getAuthToken(),
+      ));
 
   // Mock data (for offline dev)
   sl.registerLazySingleton<MockData>(() => MockData());

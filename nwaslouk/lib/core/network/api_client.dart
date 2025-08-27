@@ -3,7 +3,10 @@ import '../env/environment.dart';
 import '../logging/app_logger.dart';
 
 class ApiClient {
-  static Dio createDio({required String baseUrl}) {
+  static Dio createDio({
+    required String baseUrl,
+    required Future<String?> Function() tokenProvider,
+  }) {
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
@@ -18,7 +21,15 @@ class ApiClient {
     );
 
     dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        try {
+          final token = await tokenProvider();
+          if (token != null && token.isNotEmpty) {
+            options.headers.putIfAbsent('Authorization', () => 'Bearer $token');
+          }
+        } catch (_) {
+          // Swallow token read errors to avoid blocking requests
+        }
         if (Environment.current.enableNetworkLogs) {
           AppLogger.d('[REQ] ${options.method} ${options.uri}');
           AppLogger.d(options.data);

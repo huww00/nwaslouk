@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 
 // Global error handler
 // eslint-disable-next-line no-unused-vars
