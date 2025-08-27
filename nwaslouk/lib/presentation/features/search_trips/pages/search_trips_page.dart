@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/search_trips_provider.dart';
+import '../../profile/pages/profile_page.dart';
 import '../../booking/pages/booking_page.dart';
 
 class SearchTripsPage extends ConsumerWidget {
@@ -13,7 +14,16 @@ class SearchTripsPage extends ConsumerWidget {
     final notifier = ref.read(searchTripsProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Search Trips')),
+      appBar: AppBar(
+        title: const Text('Search Trips'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Profile',
+            onPressed: () => Navigator.of(context).pushNamed(ProfilePage.routeName),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
